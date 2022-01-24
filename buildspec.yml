@@ -1,6 +1,4 @@
 version: 0.2
-
-
 phases:
   pre_build:
     commands:
@@ -17,4 +15,4 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push 176527102129.dkr.ecr.us-east-1.amazonaws.com/176527102129.dkr.ecr.us-east-1.amazonaws.com/hello_docker_example:latest
+      - docker push 176527102129.dkr.ecr.us-east-1.amazonaws.com/hello_docker_example:latest
