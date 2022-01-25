@@ -5,14 +5,17 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 176527102129.dkr.ecr.us-east-1.amazonaws.com
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}  	  
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t 176527102129.dkr.ecr.us-east-1.amazonaws.com/hello_docker_example:latest .
-      - docker tag 176527102129.dkr.ecr.us-east-1.amazonaws.com/hello_docker_example:latest 176527102129.dkr.ecr.us-east-1.amazonaws.com/176527102129.dkr.ecr.us-east-1.amazonaws.com/hello_docker_example:latest
+      - docker build -t 176527102129.dkr.ecr.us-east-1.amazonaws.com/brp-ms-poc-repo:latest .
+      - docker tag 176527102129.dkr.ecr.us-east-1.amazonaws.com/brp-ms-poc-repo:latest 176527102129.dkr.ecr.us-east-1.amazonaws.com/176527102129.dkr.ecr.us-east-1.amazonaws.com/brp-ms-poc-repo:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push 176527102129.dkr.ecr.us-east-1.amazonaws.com/hello_docker_example:latest
+      - docker push 176527102129.dkr.ecr.us-east-1.amazonaws.com/brp-ms-poc-repo:latest
+	  - docker push 176527102129.dkr.ecr.us-east-1.amazonaws.com/brp-ms-poc-repo:$IMAGE_TAG
